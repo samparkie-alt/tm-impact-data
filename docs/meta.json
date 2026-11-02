@@ -1,0 +1,59 @@
+{
+ "built": "2026-11-02 21:59 UTC",
+ "source": "OS Open Roads, ESRI Shapefile, GB (OS Downloads API)",
+ "links": 299547,
+ "junctions": 251286,
+ "squares": 2252,
+ "tile_size_m": 10000,
+ "simplified_m": 5.0,
+ "link_fields": [
+  "id",
+  "roadNumber",
+  "name",
+  "formOfWay",
+  "class",
+  "function",
+  "trunk",
+  "primary",
+  "length_m",
+  "xy"
+ ],
+ "junction_fields": [
+  "x",
+  "y",
+  "road",
+  "joining_class",
+  "joining_road",
+  "joining_function"
+ ],
+ "codes": {
+  "formOfWay": {
+   "S": "Single Carriageway",
+   "D": "Dual Carriageway",
+   "C": "Collapsed Dual Carriageway",
+   "L": "Slip Road",
+   "R": "Roundabout",
+   "X": "Other"
+  },
+  "class": {
+   "M": "Motorway",
+   "A": "A Road",
+   "B": "B Road",
+   "C": "Classified Unnumbered",
+   "U": "Unclassified",
+   "N": "Not Classified",
+   "X": "Unknown"
+  },
+  "function": {
+   "M": "Motorway",
+   "A": "A Road",
+   "B": "B Road",
+   "m": "Minor Road",
+   "l": "Local Road",
+   "a": "Local Access Road",
+   "r": "Restricted Local Access Road",
+   "s": "Secondary Access Road"
+  }
+ },
+ "credit": "Contains OS data (c) Crown copyright and database right 2026. Open Government Licence v3.0."
+}
