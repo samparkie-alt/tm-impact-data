@@ -28,7 +28,9 @@ jobs:
           curl -fL --retry 3 --retry-delay 10 -o oproad.zip \
             "https://api.os.uk/downloads/v1/products/OpenRoads/downloads?area=GB&format=ESRI%C2%AE+Shapefile&redirect"
           ls -l oproad.zip
-          unzip -q oproad.zip -d oproad
+          # OS zips use absolute paths, so unzip warns (exit code 1). Only a real error (2 or more) stops the run.
+          unzip -q oproad.zip -d oproad || [ $? -eq 1 ]
+          rm oproad.zip
           find oproad -name "*RoadLink*.shp" | head -5
           find oproad -name "*RoadLink*.shp" | wc -l
 
