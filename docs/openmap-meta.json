@@ -1,0 +1,70 @@
+{
+ "built": "2026-11-20 21:09 UTC",
+ "source": "OS OpenMap - Local, GeoPackage, GB (OS Downloads API)",
+ "layers_found": [
+  "building",
+  "car_charging_point",
+  "electricity_transmission_line",
+  "foreshore",
+  "functional_site",
+  "glasshouse",
+  "important_building",
+  "motorway_junction",
+  "named_place",
+  "railway_station",
+  "railway_track",
+  "railway_tunnel",
+  "road",
+  "road_tunnel",
+  "roundabout",
+  "surface_water_area",
+  "surface_water_line",
+  "tidal_boundary",
+  "tidal_water",
+  "woodland"
+ ],
+ "sites": {
+  "count": {
+   "sites": 37926,
+   "buildings": 241850
+  },
+  "squares": 2381,
+  "tile_size_m": 10000,
+  "size_mb": 40.4,
+  "simplified_m": 2.0,
+  "site_fields": [
+   "name",
+   "classification",
+   "centreX",
+   "centreY",
+   "polygons"
+  ],
+  "building_fields": [
+   "name",
+   "buildingTheme",
+   "classification",
+   "centreX",
+   "centreY",
+   "polygons"
+  ]
+ },
+ "background": {
+  "count": {
+   "building": 614449,
+   "woodland": 96678,
+   "water": 28486,
+   "waterline": 82223,
+   "tidal": 722,
+   "foreshore": 1395,
+   "rail": 12697
+  },
+  "squares": 2773,
+  "tile_size_m": 5000,
+  "size_mb": 47.4,
+  "simplified_m": 1.0,
+  "corridor_m": 250,
+  "corridor": "motorway and trunk road links from the road tiles"
+ },
+ "geometry": "polygon = list of rings, outer first; ring or line = x0, y0, then dx, dy, whole metres on the OS grid",
+ "credit": "Contains OS data (c) Crown copyright and database right 2026. Open Government Licence v3.0."
+}
