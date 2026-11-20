@@ -1,0 +1,55 @@
+name: Build USRN tiles
+
+# Press "Run workflow" on the Actions tab to download the latest OS Open USRN and rebuild the street reference tiles.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: save-to-repo
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Get this repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install the GeoPackage reader
+        run: pip install geopandas==1.2.0 pyogrio==0.13.0 shapely==2.2.0
+
+      - name: Download OS Open USRN (GB, GeoPackage, about 250 MB)
+        run: |
+          curl -fL --retry 3 --retry-delay 10 -o usrn.zip \
+            "https://api.os.uk/downloads/v1/products/OpenUSRN/downloads?area=GB&format=GeoPackage&redirect"
+          ls -l usrn.zip
+          # OS zips use absolute paths, so unzip warns (exit code 1). Only a real error (2 or more) stops the run.
+          unzip -q usrn.zip -d usrn || [ $? -eq 1 ]
+          rm usrn.zip
+          find usrn -name "*.gpkg" -exec ls -l {} \;
+
+      - name: Build the tiles
+        run: |
+          cd scripts
+          python build_usrn.py ../usrn ../docs
+          du -sh ../docs/u ../docs/ui ../docs
+          cat ../docs/usrn-meta.json
+
+      - name: Save the tiles to the repo
+        run: |
+          rm -rf usrn
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A docs
+          git commit -q -m "USRN tiles from OS Open USRN, built $(date -u +%Y-%m-%d)" || echo "No changes"
+          git pull --rebase -q
+          git push

@@ -1,0 +1,64 @@
+name: Build OpenMap Local tiles
+
+# Press "Run workflow" on the Actions tab to download the latest OS OpenMap - Local and rebuild
+# the sites tiles (all of GB) and the drawing background tiles (along motorways and trunk roads).
+# Run "Build road tiles" at least once before this. It uses those tiles to find the corridor.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: save-to-repo
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Get this repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install the GeoPackage reader
+        run: pip install geopandas==1.2.0 pyogrio==0.13.0 shapely==2.2.0
+
+      - name: Free disk space for the download
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h .
+
+      - name: Download OS OpenMap - Local (GB, GeoPackage, several GB)
+        run: |
+          curl -fL --retry 3 --retry-delay 10 -o oml.zip \
+            "https://api.os.uk/downloads/v1/products/OpenMapLocal/downloads?area=GB&format=GeoPackage&redirect"
+          ls -l oml.zip
+          # OS zips use absolute paths, so unzip warns (exit code 1). Only a real error (2 or more) stops the run.
+          unzip -q oml.zip -d oml || [ $? -eq 1 ]
+          rm oml.zip
+          find oml -name "*.gpkg" | head -5
+          find oml -name "*.gpkg" | wc -l
+          df -h .
+
+      - name: Build the tiles
+        run: |
+          cd scripts
+          python build_openmap.py ../oml ../docs
+          du -sh ../docs/s ../docs/bg ../docs
+          cat ../docs/openmap-meta.json
+
+      - name: Save the tiles to the repo
+        run: |
+          rm -rf oml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A docs
+          git commit -q -m "Sites and background tiles from OS OpenMap - Local, built $(date -u +%Y-%m-%d)" || echo "No changes"
+          git pull --rebase -q
+          git push
