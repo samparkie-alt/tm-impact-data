@@ -41,8 +41,8 @@ def column(df, *names):
 def enc(coords):
     """Delta-encode one line or ring: [x0, y0, dx, dy, ...] in whole metres, dropping repeated points."""
     out, px, py = [], None, None
-    for x, y in coords:
-        x, y = int(round(x)), int(round(y))
+    for c in coords:                      # some OS data carries a height (Z) value: ignore it
+        x, y = int(round(c[0])), int(round(c[1]))
         if px is None:
             out += [x, y]
         elif (x, y) != (px, py):
