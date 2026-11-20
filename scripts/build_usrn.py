@@ -39,8 +39,10 @@ count, skipped = 0, 0
 type_count = {}
 for path in find_gpkg(SRC):
     for name, gtype in pyogrio.list_layers(path):
-        if not gtype or 'line' not in str(gtype).lower():
-            print('Skipping layer', name, gtype)
+        # pick the layer by its fields: OS reports the geometry type as 'Unknown'
+        fields = [str(f).lower() for f in pyogrio.read_info(path, layer=name)['fields']]
+        if 'usrn' not in fields:
+            print('Skipping layer', name, gtype, '(no usrn field)')
             continue
         print('Reading', path, 'layer', name, flush=True)
         df = pyogrio.read_dataframe(path, layer=name)
