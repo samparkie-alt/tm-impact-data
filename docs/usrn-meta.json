@@ -1,0 +1,41 @@
+{
+ "built": "2026-11-20 21:15 UTC",
+ "source": "OS Open USRN, GeoPackage, GB (OS Downloads API)",
+ "streets": 1771648,
+ "skipped_empty": 0,
+ "by_type": {
+  "O": 490551,
+  "D": 979886,
+  "N": 283218,
+  "U": 17993
+ },
+ "squares": 9518,
+ "size_mb": 365.0,
+ "tile_size_m": 5000,
+ "edge_overlap_m": 25,
+ "simplified_m": 2.0,
+ "tile_fields": [
+  "usrn",
+  "type",
+  "lines"
+ ],
+ "index_fields": [
+  "type",
+  "minX",
+  "minY",
+  "maxX",
+  "maxY"
+ ],
+ "line_encoding": "x0, y0, then dx, dy for each next point, whole metres on the OS grid",
+ "codes": {
+  "type": {
+   "D": "Designated Street Name",
+   "O": "Officially Described Street",
+   "N": "Numbered Street",
+   "U": "Unofficial Street Name",
+   "A": "Street for addressing purposes only",
+   "X": "Other"
+  }
+ },
+ "credit": "Contains OS data (c) Crown copyright and database right 2026. Open Government Licence v3.0."
+}
