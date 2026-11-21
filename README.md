@@ -46,6 +46,14 @@ All of GB as background would not fit in GitHub Pages' 1 GB, so it only covers t
 
 To keep files small, every line or ring is one list: the first point in full, then each next point as the change from the one before, in whole metres on the OS grid. `[x0, y0, dx1, dy1, dx2, dy2, ...]`. To read it, start at x0, y0 and keep adding. A polygon is a list of rings, outer ring first.
 
+## Roadspace place list (clash checker)
+
+| File | What it holds |
+|---|---|
+| `docs/rs/roadspace-<first 16 of SHA-256>.b64` | The roadspace clash checker's gazetteer (junctions, marker posts every 0.3 km and place names by road), gzipped JSON as base64. Built from OS Open Names and the marker post data in the tm-impact-tools repo |
+
+The Worker fetches this file on first use and checks it against the SHA-256 written into the Worker, so a changed copy is never used. Each version has its own file name; leave old ones in place so older Worker versions keep working. Publish a new one with `python tools/publish_roadspace_data.py <this repo>` from tm-impact-tools.
+
 ## Refreshing it (about once a year)
 
 OS updates Open Roads about twice a year. Once a year is enough.
